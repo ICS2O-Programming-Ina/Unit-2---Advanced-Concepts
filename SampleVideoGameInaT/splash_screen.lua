@@ -29,6 +29,7 @@ local scrollYSpeed = -3
 local alienSounds = audio.loadSound("Sounds/ufo.mp3")
 local alienSoundsChannel
 
+
 --------------------------------------------------------------------------------------------
 -- LOCAL FUNCTIONS
 --------------------------------------------------------------------------------------------
@@ -37,6 +38,7 @@ local alienSoundsChannel
 local function moveAlien()
     alien.x = alien.x + scrollXSpeed
     alien.y = alien.y + scrollYSpeed
+    alien.alpha = alien.alpha - 0.01
 end
 
 -- The function that will go to the main menu 
@@ -58,11 +60,12 @@ function scene:create( event )
     display.setDefault("background", 0, 0, 0)
 
     -- Insert the beetleship image
-    alien= display.newImageRect("Images/alien.png", 250, 180)
+    alien = display.newImageRect("Images/alien.png", 250, 180)
 
     -- set the initial x and y position of the beetleship
     alien.x = 100
     alien.y = display.contentHeight/2
+    alien.alpha = 1
 
     -- Insert objects into the scene group in order to ONLY be associated with this scene
     sceneGroup:insert( alien )
