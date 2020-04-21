@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------------
 --
 -- main_menu.lua
--- Created by: Your Name
--- Date: Month Day, Year
+-- Created by: Ina
+-- Date: April 17, 2020
 -- Description: This is the main menu, displaying the credits, instructions & play buttons.
 -----------------------------------------------------------------------------------------
 
@@ -36,6 +36,8 @@ local bkg_image
 local playButton
 local creditsButton
 local instructionsButton 
+local backgroundMusic = audio.loadSound("Sounds/backgroundMusic.mp3")
+local backgroundMusicChannel
 
 -----------------------------------------------------------------------------------------
 -- LOCAL FUNCTIONS
@@ -99,7 +101,9 @@ function scene:create( event )
         {   
             -- Set its position on the screen relative to the screen size
             x = display.contentWidth/2,
-            y = display.contentHeight*5/8,
+            y = display.contentHeight*5.5/8,
+            width = 270,
+            height = 80,
 
             -- Insert the images here
             defaultFile = "Images/Start Button Unpressed.png",
@@ -115,8 +119,10 @@ function scene:create( event )
     creditsButton = widget.newButton( 
         {
             -- Set its position on the screen relative to the screen size
-            x = display.contentWidth*7/8,
-            y = display.contentHeight*5/8,
+            x = display.contentWidth*6.5/8,
+            y = display.contentHeight*6.5/8,
+            width = 270,
+            height = 80,
 
             -- Insert the images here
             defaultFile = "Images/Credits Button Unpressed.png",
@@ -125,25 +131,25 @@ function scene:create( event )
             -- When the button is released, call the Credits transition function
             onRelease = CreditsTransition
         } ) 
-    
-    -- ADD INSTRUCTIONS BUTTON WIDGET
 
     -----------------------------------------------------------------------------------------
 
     -- Creating Instructions Button 
-    instructionsBUtton = widget.newButton( 
-    { 
-        -- Set its position on the screen relative to the screen size 
-        x = display.contentWidth*1/8,
-        y = display.contentHeight*5/8,
+    instructionsButton = widget.newButton( 
+        { 
+            -- Set its position on the screen relative to the screen size 
+            x = display.contentWidth*1.5/8,
+            y = display.contentHeight*6.5/8,
+            width = 270,
+            height = 80,
 
-        -- Inset the images here 
-        defaultFile = "Images/Instructions Button Unpressed.png", 
-        overFile = "Images/Instructions Button Pressed.png", 
+            -- Inset the images here 
+            defaultFile = "Images/Instructions Button Unpressed.png", 
+            overFile = "Images/Instructions Button Pressed.png", 
 
-        -- When the button is released, call the Instuctions transition function
-        onRelease = InstructionsTransition
-    } )
+            -- When the button is released, call the Instuctions transition function
+            onRelease = InstructionsTransition
+         } )
 
     -----------------------------------------------------------------------------------------
 
@@ -180,7 +186,9 @@ function scene:show( event )
     -- Called when the scene is now on screen.
     -- Insert code here to make the scene come alive.
     -- Example: start timers, begin animation, play audio, etc.
-    elseif ( phase == "did" ) then       
+    elseif ( phase == "did" ) then    
+    -- Start background music 
+    backgroundMusicChannel = audio.play( backgroundMusic )
         
     end
 
@@ -209,6 +217,8 @@ function scene:hide( event )
 
     elseif ( phase == "did" ) then
         -- Called immediately after scene goes off screen.
+        -- Stop background music for this screen 
+        audio.stop(backgroundMusicChannel)
     end
 
 end -- function scene:hide( event )

@@ -23,20 +23,20 @@ local scene = composer.newScene( sceneName )
 -----------------------------------------------------------------------------------------
  
 -- The local variables for this scene
-local beetleship
+local alien
 local scrollXSpeed = 8
 local scrollYSpeed = -3
-local jungleSounds = audio.loadSound("Sounds/animals144.mp3")
-local jungleSoundsChannel
+local alienSounds = audio.loadSound("Sounds/ufo.mp3")
+local alienSoundsChannel
 
 --------------------------------------------------------------------------------------------
 -- LOCAL FUNCTIONS
 --------------------------------------------------------------------------------------------
 
--- The function that moves the beetleship across the screen
-local function moveBeetleship()
-    beetleship.x = beetleship.x + scrollXSpeed
-    beetleship.y = beetleship.y + scrollYSpeed
+-- The function that moves the alien across the screen
+local function moveAlien()
+    alien.x = alien.x + scrollXSpeed
+    alien.y = alien.y + scrollYSpeed
 end
 
 -- The function that will go to the main menu 
@@ -58,14 +58,14 @@ function scene:create( event )
     display.setDefault("background", 0, 0, 0)
 
     -- Insert the beetleship image
-    beetleship = display.newImageRect("Images/beetleship.png", 200, 200)
+    alien= display.newImageRect("Images/alien.png", 250, 180)
 
     -- set the initial x and y position of the beetleship
-    beetleship.x = 100
-    beetleship.y = display.contentHeight/2
+    alien.x = 100
+    alien.y = display.contentHeight/2
 
     -- Insert objects into the scene group in order to ONLY be associated with this scene
-    sceneGroup:insert( beetleship )
+    sceneGroup:insert( alien )
 
 end -- function scene:create( event )
 
@@ -90,13 +90,13 @@ function scene:show( event )
 
     elseif ( phase == "did" ) then
         -- start the splash screen music
-        jungleSoundsChannel = audio.play(jungleSounds )
+        alienSoundsChannel = audio.play( alienSounds )
 
-        -- Call the moveBeetleship function as soon as we enter the frame.
-        Runtime:addEventListener("enterFrame", moveBeetleship)
+        -- Call the moveAlien function as soon as we enter the frame.
+        Runtime:addEventListener("enterFrame", moveAlien)
 
         -- Go to the main menu screen after the given time.
-        timer.performWithDelay ( 3000, gotoMainMenu)          
+        timer.performWithDelay ( 2300, gotoMainMenu)          
         
     end
 
@@ -124,7 +124,7 @@ function scene:hide( event )
     elseif ( phase == "did" ) then
         
         -- stop the jungle sounds channel for this screen
-        audio.stop(jungleSoundsChannel)
+        audio.stop(alienSoundsChannel)
     end
 
 end --function scene:hide( event )

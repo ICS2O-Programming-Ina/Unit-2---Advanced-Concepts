@@ -1,9 +1,9 @@
 -----------------------------------------------------------------------------------------
 --
 -- instructions_screen.lua
--- Created by: Your Name
+-- Created by: Ina 
 -- Special thanks to Wal Wal for helping in the design of this framework.
--- Date: Month Day, Year
+-- Date: April 17, 2020
 -- Description: This is the instructions page, displaying a back button to the main menu.
 -----------------------------------------------------------------------------------------
 
@@ -74,8 +74,10 @@ function scene:create( event )
     backButton = widget.newButton( 
     {
         -- Setting Position
-        x = display.contentWidth*7/8,
-        y = display.contentHeight*15/16,
+        x = display.contentWidth*1.5/8,
+        y = display.contentHeight*14.5/16,
+        width = 250,
+        height = 70,
 
         -- Setting Dimensions
         -- width = 1000,
