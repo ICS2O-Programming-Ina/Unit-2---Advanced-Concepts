@@ -43,7 +43,7 @@ end
 
 -- The function that will go to the main menu 
 local function gotoMainMenu()
-    composer.gotoScene( "main_menu" )
+    composer.gotoScene( "main_menu", {effect = "fromRight", time = 1000} )
 end
 
 -----------------------------------------------------------------------------------------
@@ -99,7 +99,7 @@ function scene:show( event )
         Runtime:addEventListener("enterFrame", moveAlien)
 
         -- Go to the main menu screen after the given time.
-        timer.performWithDelay ( 2300, gotoMainMenu)          
+        timer.performWithDelay ( 1500, gotoMainMenu)          
         
     end
 
