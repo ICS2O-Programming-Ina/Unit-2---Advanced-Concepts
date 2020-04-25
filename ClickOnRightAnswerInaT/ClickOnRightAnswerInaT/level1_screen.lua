@@ -87,7 +87,14 @@ local alreadyClickedAnswer = false
 -- SOUND
 -----------------------------------------------------------------------------------------
 
-
+local correctSound = audio.loadSound("Sounds/CorrectAnswer.mp3")
+local correctSoundChannel
+local wrongSound = audio.loadSound("Sounds/WrongBuzzer.mp3")
+local wrongSoundChannel 
+local backgroundMusic = audio.loadStream("Sounds/backgroundMusic.mp3")
+local backgroundMusicChannel 
+local youWinSound = audio.loadSound("Sounds/youWin.mp3")
+local youWinSoundChannel 
 -----------------------------------------------------------------------------------------
 -- LOCAL FUNCTIONS
 -----------------------------------------------------------------------------------------
@@ -128,8 +135,8 @@ local function DisplayAnswers( )
        
         answerTextObject.x = display.contentWidth*.4
         wrongAnswer1TextObject.x = display.contentWidth*.3
-        wrongAnswer2TextObject.x = display.contentWidth*1
-        wrongAnswer3TextObject.x = display.contentWidth*2
+        wrongAnswer2TextObject.x = display.contentWidth*.1
+        wrongAnswer3TextObject.x = display.contentWidth*.2
 
     else
        
@@ -181,9 +188,12 @@ local function RestartScene()
     -- if they have 0 lives, go to the You Lose screen
     if (lives == 0) then
         LoseScreenTransition()
+        audio.stop( backgroundMusic )
 
     elseif (numberCorrect == 2) then 
         WinScreenTransition()
+        youWinSoundChannel = audio.play( youWinSound )
+        audio.stop( backgroundMusicChannel )
 
     else 
         DisplayAddEquation()
@@ -204,6 +214,7 @@ local function TouchListenerAnswer(touch)
         -- if the user gets the answer right, display Correct and call RestartSceneRight
         if (answer == tonumber(userAnswer)) then     
             correct.isVisible = true
+            correctSoundChannel = audio.play( correctSound )
             -- increase the number correct by 1
             numberCorrect = numberCorrect + 1
             -- call RestartScene after 1 second
@@ -224,6 +235,7 @@ local function TouchListenerWrongAnswer1(touch)
 
         if (answer ~= tonumber(userAnswer)) then
             incorrect.isVisible = true
+            wrongSoundChannel = audio.play( wrongSound )
             -- decrease a life
             lives = lives - 1
             -- call RestartScene after 1 second
@@ -245,6 +257,7 @@ local function TouchListenerWrongAnswer2(touch)
 
             if (answer ~= tonumber(userAnswer)) then
                 incorrect.isVisible = true
+                wrongSoundChannel = audio.play( wrongSound )
                 -- decrease a life
                 lives = lives - 1
                 -- call RestartScene after 1 second
@@ -267,6 +280,7 @@ local function TouchListenerWrongAnswer3(touch)
 
             if (answer ~= tonumber(userAnswer)) then
                 incorrect.isVisible = true
+                wrongSoundChannel = audio.play( wrongSound )
                 -- decrease a life
                 lives = lives - 1
                 -- call RestartScene after 1 second
@@ -403,6 +417,7 @@ function scene:show( event )
         -- initialize the number of lives and number correct 
         lives = 3
         numberCorrect = 0
+        backgroundMusicChannel = audio.play( backgroundMusic )
 
         -- listeners to each of the answer text objects
         AddTextObjectListeners()        
