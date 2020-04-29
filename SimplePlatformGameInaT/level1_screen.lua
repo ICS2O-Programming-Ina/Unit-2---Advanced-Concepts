@@ -85,6 +85,8 @@ local youLoseSound = audio.loadSound("Sounds/YouLose.mp3")
 local youLoseSoundChannel
 local springSound = audio.loadSound("Sounds/Spring sound effect.mp3")
 local springSoundChannel 
+local youWinSound = audio.loadSound("Sounds/Cheer.m4a")
+local youWinSoundChannel
 
 -----------------------------------------------------------------------------------------
 -- LOCAL SCENE FUNCTIONS
@@ -269,6 +271,7 @@ local function onCollision( self, event )
                 -- after getting 3 questions right, go to the you win screen
 
             timer.performWithDelay(200, YouWinTransition)
+            youWinSoundChannel = audio.play( youWinSound )
             end
         end        
 
