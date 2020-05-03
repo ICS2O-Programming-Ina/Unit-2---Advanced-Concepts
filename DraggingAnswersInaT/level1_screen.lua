@@ -32,7 +32,7 @@ local correctSound = audio.loadSound("Sounds/correctSound.mp3")
 local correctSoundChannel
 local booSound = audio.loadSound("Sounds/boo.mp3")
 local booSoundChannel
-local backgroundMusic = audio.loadStream("Sounds/backgroundMusic.mp3")
+local backgroundMusic = audio.loadStream("Sounds/bkgMusic.mp3")
 audio.reserveChannels( 1 )
 local backgroundMusicChannel 
 local youWinSound = audio.loadSound("Sounds/youWinSound.mp3")
