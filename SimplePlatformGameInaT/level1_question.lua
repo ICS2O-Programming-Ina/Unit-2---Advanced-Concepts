@@ -29,6 +29,14 @@ sceneName = "level1_question"
 local scene = composer.newScene( sceneName )
 
 -----------------------------------------------------------------------------------------
+-- SOUNDS
+-----------------------------------------------------------------------------------------
+local correctSound = audio.loadSound("Sounds/correctSound.mp3")
+local correctSoundChannel
+local wrongSound = audio.loadSound("Sounds/wrongSound.mp3")
+local wrongSoundChannel
+
+-----------------------------------------------------------------------------------------
 -- LOCAL VARIABLES
 -----------------------------------------------------------------------------------------
 
@@ -78,6 +86,11 @@ local function TouchListenerAnswer(touch)
     
     if (touch.phase == "ended") then
 
+        if (soundOn == true) then 
+            -- play sound effect 
+            correctSoundChannel = audio.play( correctSound, {channel = 4, loops = 1})
+        end
+
         BackToLevel1( )
     
     end 
@@ -88,6 +101,11 @@ local function TouchListenerWrongAnswer(touch)
     userAnswer = wrongText1.text
     
     if (touch.phase == "ended") then
+         
+        if (soundOn == true) then 
+            -- play sound effect 
+            wrongSoundChannel = audio.play( wrongSound, {channel = 5, loops = 1})
+        end
         
         BackToLevel1( )
         
@@ -100,6 +118,11 @@ local function TouchListenerWrongAnswer2(touch)
     userAnswer = wrongText2.text
     
     if (touch.phase == "ended") then
+         
+        if (soundOn == true) then 
+            -- play sound effect 
+            wrongSoundChannel = audio.play( wrongSound, {channel = 5, loops = 1})
+        end
 
         BackToLevel1( )
         
@@ -111,6 +134,11 @@ local function TouchListenerWrongAnswer3(touch)
     userAnswer = wrongText3.text
     
     if (touch.phase == "ended") then
+
+        if (soundOn == true) then 
+            -- play sound effect 
+            wrongSoundChannel = audio.play( wrongSound, {channel = 5, loops = 1})
+        end
 
         BackToLevel1( )
         

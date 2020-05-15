@@ -45,9 +45,6 @@ local youLoseSoundChannel
 -- LOCAL VARIABLES
 -----------------------------------------------------------------------------------------
 
-local numberCorrect = 0 
-local numberWrong = 0
-
 -- The background image and soccer ball for this scene
 local bkg_image
 local soccerball
@@ -569,6 +566,8 @@ function scene:show( event )
         -- Insert code here to make the scene come alive.
         -- Example: start timers, begin animation, play audio, etc.
         backgroundMusic = audio.play(backgroundMusic, {channels = 1, loops = -1})
+        local numberCorrect = 0 
+        local numberWrong = 0
         RestartLevel1()
         AddAnswerBoxEventListeners() 
 

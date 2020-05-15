@@ -28,6 +28,11 @@ sceneName = "level1_screen"
 local scene = composer.newScene( sceneName )
 
 -----------------------------------------------------------------------------------------
+-- GLOBAL VARIABLES
+-----------------------------------------------------------------------------------------
+soundOn = true 
+
+-----------------------------------------------------------------------------------------
 -- LOCAL VARIABLES
 -----------------------------------------------------------------------------------------
 
@@ -76,17 +81,19 @@ local ball2
 local ball3
 local theBall
 
+local muteButton
+local unmuteButton 
+
 local questionsAnswered = 0
 
 -----------------------------------------------------------------------------------------
 -- SOUNDS
 -----------------------------------------------------------------------------------------
-local youLoseSound = audio.loadSound("Sounds/YouLose.mp3")
-local youLoseSoundChannel
-local springSound = audio.loadSound("Sounds/Spring sound effect.mp3")
+
+local springSound = audio.loadSound("Sounds/dieSound.mp3")
 local springSoundChannel 
-local youWinSound = audio.loadSound("Sounds/Cheer.m4a")
-local youWinSoundChannel
+local backgroundMusic = audio.loadStream("Sounds/bkgMusic.mp3")
+local backgroundMusicChannel
 
 -----------------------------------------------------------------------------------------
 -- LOCAL SCENE FUNCTIONS
@@ -145,6 +152,46 @@ local function RemoveRuntimeListeners()
     Runtime:removeEventListener("enterFrame", movePlayer)
     Runtime:removeEventListener("touch", stop )
 end
+
+local function Mute(touch)
+    if(touch.phase == "ended") then 
+        -- pause the music 
+        audio.pause(backgroundMusicChannel)
+
+        -- turn the sound variable off 
+        soundOn = false 
+
+        -- make the unmute button invisible and the mute button visible 
+        muteButton.isVisible = true
+        unmuteButton.isVisible = false
+    end
+end
+
+local function UnMute(touch)
+    if(touch.phase == "ended") then 
+        -- pause the music 
+        audio.resume(backgroundMusicChannel)
+
+        -- turn the sound variable off 
+        soundOn = true 
+
+        -- make the unmute button invisible and the mute button visible 
+        muteButton.isVisible = false
+        unmuteButton.isVisible = true
+    end
+end
+
+local function AddMuteUnMuteListeners()
+    unmuteButton:addEventListener("touch", Mute)
+    muteButton:addEventListener("touch", UnMute)
+
+end
+
+local function RemoveMuteUnMuteListeners()
+    unmuteButton:removeEventListener("touch", Mute)
+    muteButton:addEventListener("touch", UnMute)
+end
+
 
 
 local function ReplaceCharacter()
@@ -208,8 +255,11 @@ local function onCollision( self, event )
             (event.target.myName == "spikes2") or
             (event.target.myName == "spikes3") then
 
-            -- add sound effect here
-            springSoundChannel = audio.play( springSound )
+                if (soundOn == true) then 
+
+                    -- play sound effect 
+                    springSoundChannel = audio.play( springSound, {channel = 2, loops = 1} )
+                end
 
             -- remove runtime listeners that move the character
             RemoveArrowEventListeners()
@@ -241,7 +291,6 @@ local function onCollision( self, event )
                 heart2.isVisible = false
                 heart3.isVisible = false
                 timer.performWithDelay(200, YouLoseTransition)
-                youLoseSoundChannel = audio.play( youLoseSound )
             end
         end
 
@@ -271,7 +320,6 @@ local function onCollision( self, event )
                 -- after getting 3 questions right, go to the you win screen
 
             timer.performWithDelay(200, YouWinTransition)
-            youWinSoundChannel = audio.play( youWinSound )
             end
         end        
 
@@ -585,6 +633,24 @@ function scene:create( event )
     -- Insert objects into the scene group in order to ONLY be associated with this scene
     sceneGroup:insert( ball3 )
 
+    -- mute button 
+    muteButton = display.newImageRect ("Images/mute.png", 70, 70)
+    muteButton.x = 50 
+    muteButton.y = 730
+    muteButton.isVisible = false
+
+    -- Insert objects into the scene group in order to ONLY be associated with this scene
+    sceneGroup:insert( muteButton )
+
+    -- unmute Button 
+    unmuteButton = display.newImageRect ("Images/unmuteButton.png", 70, 70)
+    unmuteButton.x = 50 
+    unmuteButton.y = 730
+    unmuteButton.isVisible = true
+
+    -- Insert objects into the scene group in order to ONLY be associated with this scene
+    sceneGroup:insert( unmuteButton )
+
 end --function scene:create( event )
 
 -----------------------------------------------------------------------------------------
@@ -617,6 +683,16 @@ function scene:show( event )
         numLives = 3
         questionsAnswered = 0
 
+        if (soundOn == true) then 
+            -- play backgroundMusic 
+            backgroundMusicChannel = audio.play( backgroundMusic, {channel = 1, loops = -1})
+            
+            muteButton.isVisible = false
+            unmuteButton.isVisible = true 
+        else
+
+        end
+
         -- make all soccer balls visible
         MakeSoccerBallsVisible()
 
@@ -631,6 +707,9 @@ function scene:show( event )
 
         -- create the character, add physics bodies and runtime listeners
         ReplaceCharacter()
+
+        -- add the mute an unmute functionality to the buttons 
+        AddMuteUnMuteListeners()
 
     end
 
@@ -655,6 +734,9 @@ function scene:hide( event )
     -----------------------------------------------------------------------------------------
 
     elseif ( phase == "did" ) then
+        -- stop the background music 
+        audio.stop(backgroundMusicChannel)
+
         -- Called immediately after scene goes off screen.
         RemoveCollisionListeners()
         RemovePhysicsBodies()
@@ -662,6 +744,7 @@ function scene:hide( event )
         physics.stop()
         RemoveArrowEventListeners()
         RemoveRuntimeListeners()
+        RemoveMuteUnMuteListeners()
         display.remove(character)
     end
 
