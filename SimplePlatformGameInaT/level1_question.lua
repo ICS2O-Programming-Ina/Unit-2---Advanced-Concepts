@@ -88,7 +88,7 @@ local function TouchListenerAnswer(touch)
 
         if (soundOn == true) then 
             -- play sound effect 
-            correctSoundChannel = audio.play( correctSound, {channel = 4, loops = 1})
+            correctSoundChannel = audio.play( correctSound, {channel = 6, loops = 1})
         end
 
         BackToLevel1( )
